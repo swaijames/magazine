@@ -5,3 +5,4 @@ from .models import *
 
 admin.site.register(news)
 admin.site.register(category)
+admin.site.register(comment)
