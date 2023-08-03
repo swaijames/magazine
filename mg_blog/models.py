@@ -42,11 +42,12 @@ class news(models.Model):
 
 
 class comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, blank=False, null=True)
     news = models.ForeignKey(news, on_delete=models.CASCADE)
     comment = models.TextField(blank=False, null=False)
     created_at = models.DateTimeField(default=datetime.today())
     updated_at = models.DateTimeField(default=datetime.today())
+    status = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = "Comments"

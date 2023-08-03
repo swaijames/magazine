@@ -12,15 +12,16 @@ def index(request):
     sportnews = news.objects.filter(category='1')
     science_tech = news.objects.filter(category='3')
     politicsnews = news.objects.filter(category='2')[0:4]
-    # print(sportnews)
+    comment_count = comment.objects.all().count()
     all_news = news.objects.all().order_by('-created_at')[0: 4]
     return render(request, 'index.html',
                   {"first_news": first_news, "two_news": two_news, "breaking_news": breaking_news,
                    "all_news": all_news, "categories": categories, 'sportnews': sportnews,
-                   'politicsnews': politicsnews, 'science_tech': science_tech})
+                   'politicsnews': politicsnews, 'science_tech': science_tech, 'comment_count': comment_count})
 
 
 def news_detail(request, id):
     detail = news.objects.get(id=id)
+    comments = comment.objects.filter(news_id=id)
     print(detail)
-    return render(request, 'news_detail.html', {'detail': detail})
+    return render(request, 'news_detail.html', {'detail': detail, 'comments': comments})
