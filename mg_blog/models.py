@@ -43,6 +43,7 @@ class news(models.Model):
 
 class comment(models.Model):
     name = models.CharField(max_length=255, blank=False, null=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
     news = models.ForeignKey(news, on_delete=models.CASCADE)
     comment = models.TextField(blank=False, null=False)
     created_at = models.DateTimeField(default=datetime.today())

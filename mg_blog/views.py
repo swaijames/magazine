@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from .models import *
+from .forms import *
 
 
 # Create your views here.
@@ -21,7 +23,26 @@ def index(request):
 
 
 def news_detail(request, id):
+    new = get_object_or_404(news, id=id)
     detail = news.objects.get(id=id)
     comments = comment.objects.filter(news_id=id)
+
+    # form = CommentForm(data=request.POST)
+    user_comment = None
+    comment_form = CommentForm()
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            user_comment = comment_form.save(commit=False)
+            user_comment.news = new
+            user_comment.save()
+            return HttpResponseRedirect("/thanks/")
+        else:
+            comment_form = CommentForm()
+
     print(detail)
-    return render(request, 'news_detail.html', {'detail': detail, 'comments': comments})
+    return render(request, 'news_detail.html',
+                  {'detail': detail, 'comments': comments, 'user_comment': user_comment, 'comment_form': comment_form})
+
+
+pass
